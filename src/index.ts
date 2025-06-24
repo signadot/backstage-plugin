@@ -1,1 +1,1 @@
-export { signadotEnvironmentsPlugin, SignadotEnvironmentsPage } from './plugin';
+export { signadotEnvironmentsPlugin, SignadotEnvironmentsPage } from "./plugin";
