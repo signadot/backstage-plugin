@@ -1,91 +1,97 @@
-import { useApi } from '@backstage/core-plugin-api';
-import { useCallback, useEffect, useState } from 'react';
-import { signadotEnvironmentsApiRef, SandboxV2, SandboxStatus } from '../api/SandboxApi';
+import { useApi } from "@backstage/core-plugin-api";
+import { useCallback, useEffect, useState } from "react";
+import {
+	signadotEnvironmentsApiRef,
+	SandboxV2,
+	SandboxStatus,
+} from "../api/SandboxApi";
 
 export interface SandboxesData {
-  sandboxesList: SandboxV2[] | null;
-  error: string | null;
-  loading: boolean;
+	sandboxesList: SandboxV2[] | null;
+	error: string | null;
+	loading: boolean;
 }
 
 export interface SandboxStatusesData {
-  statuses: SandboxStatus[] | null;
-  error: string | null;
-  loading: boolean;
+	statuses: SandboxStatus[] | null;
+	error: string | null;
+	loading: boolean;
 }
 
 export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
-  const sandboxApi = useApi(signadotEnvironmentsApiRef);
-  const [data, setData] = useState<SandboxesData>({
-    sandboxesList: null,
-    error: null,
-    loading: true,
-  });
+	const sandboxApi = useApi(signadotEnvironmentsApiRef);
+	const [data, setData] = useState<SandboxesData>({
+		sandboxesList: null,
+		error: null,
+		loading: true,
+	});
 
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await sandboxApi.getSandboxes();
-      setData({
-        sandboxesList: response.sandboxesList,
-        error: null,
-        loading: false,
-      });
-    } catch (error) {
-      setData({
-        sandboxesList: null,
-        error: error instanceof Error ? error.message : 'An error occurred',
-        loading: false,
-      });
-    }
-  }, [sandboxApi]);
+	const fetchData = useCallback(async () => {
+		try {
+			const response = await sandboxApi.getSandboxes();
+			setData({
+				sandboxesList: response.sandboxesList,
+				error: null,
+				loading: false,
+			});
+		} catch (error) {
+			setData({
+				sandboxesList: null,
+				error: error instanceof Error ? error.message : "An error occurred",
+				loading: false,
+			});
+		}
+	}, [sandboxApi]);
 
-  useEffect(() => {
-    fetchData();
-    
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchData, refreshInterval);
-      return () => clearInterval(interval);
-    }
-    return undefined;
-  }, [fetchData, refreshInterval]);
+	useEffect(() => {
+		fetchData();
 
-  return data;
+		if (refreshInterval > 0) {
+			const interval = setInterval(fetchData, refreshInterval);
+			return () => clearInterval(interval);
+		}
+		return undefined;
+	}, [fetchData, refreshInterval]);
+
+	return data;
 };
 
-export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData => {
-  const sandboxApi = useApi(signadotEnvironmentsApiRef);
-  const [data, setData] = useState<SandboxStatusesData>({
-    statuses: null,
-    error: null,
-    loading: true,
-  });
+export const useSandboxStatuses = (
+	refreshInterval = 30000,
+): SandboxStatusesData => {
+	const sandboxApi = useApi(signadotEnvironmentsApiRef);
+	const [data, setData] = useState<SandboxStatusesData>({
+		statuses: null,
+		error: null,
+		loading: true,
+	});
 
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await sandboxApi.getSandboxStatuses();
-      setData({
-        statuses: response.statuses,
-        error: null,
-        loading: false,
-      });
-    } catch (error) {
-      setData({
-        statuses: null,
-        error: error instanceof Error ? error.message : 'An error occurred',
-        loading: false,
-      });
-    }
-  }, [sandboxApi]);
+	const fetchData = useCallback(async () => {
+		try {
+			const response = await sandboxApi.getSandboxStatuses();
+			setData({
+				statuses: response.statuses,
+				error: null,
+				loading: false,
+			});
+		} catch (error) {
+			setData({
+				statuses: null,
+				error: error instanceof Error ? error.message : "An error occurred",
+				loading: false,
+			});
+		}
+	}, [sandboxApi]);
 
-  useEffect(() => {
-    fetchData();
-    
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchData, refreshInterval);
-      return () => clearInterval(interval);
-    }
-    return undefined;
-  }, [fetchData, refreshInterval]);
+	useEffect(() => {
+		fetchData();
 
-  return data;
-}; 
+		if (refreshInterval > 0) {
+			const interval = setInterval(fetchData, refreshInterval);
+			return () => clearInterval(interval);
+		}
+		return undefined;
+	}, [fetchData, refreshInterval]);
+
+	return data;
+};
