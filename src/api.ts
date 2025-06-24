@@ -1,34 +1,31 @@
 import { ConfigApi, createApiRef } from "@backstage/core-plugin-api";
 
 export interface SignadotEnvironmentsApi {
-	getApiBaseUrl(): string;
-	getOrganization(): string | undefined;
+  getApiBaseUrl(): string;
+  getOrganization(): string | undefined;
 }
 
-export const signadotEnvironmentsApiRef = createApiRef<SignadotEnvironmentsApi>(
-	{
-		id: "plugin.signadot-environments.service",
-	},
-);
+export const signadotEnvironmentsApiRef = createApiRef<SignadotEnvironmentsApi>({
+  id: "plugin.signadot-environments.service",
+});
 
 export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
-	private apiUrl: string;
-	private org: string;
+  private apiUrl: string;
+  private org: string;
 
-	constructor(config: ConfigApi) {
-		const apiUrl =
-			config.getOptionalString("signadot.apiUrl") ?? "https://api.signadot.com";
-		const org = config.getString("signadot.org");
+  constructor(config: ConfigApi) {
+    const apiUrl = config.getOptionalString("signadot.apiUrl") ?? "https://api.signadot.com";
+    const org = config.getString("signadot.org");
 
-		this.apiUrl = apiUrl;
-		this.org = org;
-	}
+    this.apiUrl = apiUrl;
+    this.org = org;
+  }
 
-	getApiBaseUrl(): string {
-		return this.apiUrl;
-	}
+  getApiBaseUrl(): string {
+    return this.apiUrl;
+  }
 
-	getOrganization(): string {
-		return this.org;
-	}
+  getOrganization(): string {
+    return this.org;
+  }
 }
