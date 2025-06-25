@@ -1,11 +1,12 @@
 import { createDevApp } from "@backstage/dev-utils";
-import { signadotEnvironmentsPlugin, SignadotEnvironmentsPage } from "../src/plugin";
+import React from "react";
+import { SignadotPage, signadotPlugin } from "../src/plugin";
 
 createDevApp()
-  .registerPlugin(signadotEnvironmentsPlugin)
+  .registerPlugin(signadotPlugin)
   .addPage({
-    element: <SignadotEnvironmentsPage />,
+    element: <SignadotPage />,
     title: "Root Page",
-    path: "/signadot-environments",
+    path: "/signadot",
   })
   .render();

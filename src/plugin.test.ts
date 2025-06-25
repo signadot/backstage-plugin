@@ -1,7 +1,7 @@
-import { signadotEnvironmentsPlugin } from "./plugin";
+import { signadotPlugin } from "./plugin";
 
 describe("signadot-environments", () => {
   it("should export plugin", () => {
-    expect(signadotEnvironmentsPlugin).toBeDefined();
+    expect(signadotPlugin).toBeDefined();
   });
 });
