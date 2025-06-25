@@ -1,5 +1,5 @@
+import { Progress, ResponseErrorPanel, Table, type TableColumn } from "@backstage/core-components";
 import { makeStyles } from "@material-ui/core/styles";
-import { Table, TableColumn, Progress, ResponseErrorPanel } from "@backstage/core-components";
 import useAsync from "react-use/lib/useAsync";
 
 export const exampleUsers = {
@@ -263,14 +263,14 @@ export const DenseTable = ({ users }: DenseTableProps) => {
 
   const data = users.map((user) => {
     return {
-      avatar: <img src={user.picture} className={classes.avatar} alt={user.name.first} />,
+      avatar: <img alt={user.name.first} className={classes.avatar} src={user.picture} />,
       name: `${user.name.first} ${user.name.last}`,
       email: user.email,
       nationality: user.nat,
     };
   });
 
-  return <Table title="Example User List" options={{ search: false, paging: false }} columns={columns} data={data} />;
+  return <Table columns={columns} data={data} options={{ search: false, paging: false }} title="Example User List" />;
 };
 
 export const ExampleFetchComponent = () => {

@@ -1,6 +1,8 @@
 import { useApi } from "@backstage/core-plugin-api";
 import { useCallback, useEffect, useState } from "react";
-import { signadotEnvironmentsApiRef, SandboxV2, SandboxStatus } from "../api/SandboxApi";
+import { signadotEnvironmentsApiRef } from "../api/SandboxApi";
+import type { SandboxStatus } from "../internal/types/sandboxLegacy";
+import type { SandboxV2 } from "../internal/types/sandboxes";
 
 export interface SandboxesData {
   sandboxesList: SandboxV2[] | null;

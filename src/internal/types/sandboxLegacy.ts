@@ -1,4 +1,4 @@
-import { WorkloadKind } from "./workload";
+import type { WorkloadKind } from "./workload";
 
 export type ForkOf = {
   kind: WorkloadKind;

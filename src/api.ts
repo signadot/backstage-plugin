@@ -1,4 +1,4 @@
-import { ConfigApi, createApiRef } from "@backstage/core-plugin-api";
+import { type ConfigApi, createApiRef } from "@backstage/core-plugin-api";
 
 export interface SignadotEnvironmentsApi {
   getApiBaseUrl(): string;
