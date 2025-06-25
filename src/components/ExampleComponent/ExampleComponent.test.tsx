@@ -1,8 +1,8 @@
-import { ExampleComponent } from "./ExampleComponent";
+import { registerMswTestHooks, renderInTestApp } from "@backstage/test-utils";
+import { screen } from "@testing-library/react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { screen } from "@testing-library/react";
-import { registerMswTestHooks, renderInTestApp } from "@backstage/test-utils";
+import { ExampleComponent } from "./ExampleComponent";
 
 describe("ExampleComponent", () => {
   const server = setupServer();

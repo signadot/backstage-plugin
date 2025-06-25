@@ -1,13 +1,6 @@
-import { createApiRef, FetchApi, ConfigApi, DiscoveryApi } from "@backstage/core-plugin-api";
-
-export interface SandboxV2 {
-  name: string;
-  // Add other fields as needed from your types
-}
-
-export interface SandboxStatus {
-  // Add fields from your types
-}
+import { type ConfigApi, createApiRef, type DiscoveryApi, type FetchApi } from "@backstage/core-plugin-api";
+import type { SandboxV2 } from "../internal/types/sandboxes";
+import type { SandboxStatus } from "../internal/types/sandboxLegacy";
 
 export interface SandboxesResponse {
   sandboxesList: SandboxV2[];

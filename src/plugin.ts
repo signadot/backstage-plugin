@@ -1,14 +1,8 @@
-import {
-  createPlugin,
-  createRoutableExtension,
-  createApiFactory,
-  configApiRef,
-  fetchApiRef,
-  discoveryApiRef,
-} from "@backstage/core-plugin-api";
+import { configApiRef, createApiFactory, createComponentExtension, createPlugin, createRoutableExtension, discoveryApiRef, fetchApiRef } from "@backstage/core-plugin-api";
+
+import { SandboxClient, signadotEnvironmentsApiRef } from "./api/SandboxApi";
 
 import { rootRouteRef } from "./routes";
-import { signadotEnvironmentsApiRef, SandboxClient } from "./api/SandboxApi";
 
 export const signadotEnvironmentsPlugin = createPlugin({
   id: "signadot-environments",
@@ -36,13 +30,20 @@ export const signadotEnvironmentsPlugin = createPlugin({
   ],
 });
 
-/**
- * The main page component for the signadot-environments plugin
- */
+
 export const SignadotEnvironmentsPage = signadotEnvironmentsPlugin.provide(
   createRoutableExtension({
     name: "SignadotEnvironmentsPage",
-    component: () => import("./components/SandboxList/SandboxList").then((m) => m.SandboxList),
+    component: () => import("./components/SignadotEnvironmentsPage").then((m) => m.SignadotEnvironmentsPage),
     mountPoint: rootRouteRef,
+  }),
+);
+
+export const SandboxesCard = signadotEnvironmentsPlugin.provide(
+  createComponentExtension({
+    name: "SandboxesCard",
+    component: {
+      lazy: () => import("./components/SandboxesCard/SandboxesCard").then((m) => m.SandboxesCard),
+    },
   }),
 );

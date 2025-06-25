@@ -1,6 +1,6 @@
-import { ClusterDefault } from "./cluster";
-import { ForkOf, HostEndpoint, SandboxFork } from "./sandboxLegacy";
-import { TestExecutionPhase } from "./testexecutions";
+import type { ClusterDefault } from "./cluster";
+import type { ForkOf, HostEndpoint, SandboxFork } from "./sandboxLegacy";
+import type { TestExecutionPhase } from "./testexecutions";
 
 export interface EndpointV2 {
   routType: string;
