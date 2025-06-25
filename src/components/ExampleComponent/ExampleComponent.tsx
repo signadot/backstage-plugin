@@ -1,13 +1,14 @@
 import { Content, ContentHeader, Header, HeaderLabel, InfoCard, Page, SupportButton } from "@backstage/core-components";
 import { useApi } from "@backstage/core-plugin-api";
 import { Grid, Typography } from "@material-ui/core";
-import { signadotEnvironmentsApiRef } from "../../api";
+import React from "react";
+import { signadotApiRef } from "../../api";
 import { ExampleFetchComponent } from "../ExampleFetchComponent";
 
 export const ExampleComponent = () => {
-  const signadotApi = useApi(signadotEnvironmentsApiRef);
-  const apiBaseUrl = signadotApi.getApiBaseUrl();
-  const organization = signadotApi.getOrganization();
+  const api = useApi(signadotApiRef);
+  const apiBaseUrl = api.getApiBaseUrl();
+  const organization = api.getOrganization();
 
   return (
     <Page themeId="tool">

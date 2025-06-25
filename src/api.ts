@@ -5,8 +5,8 @@ export interface SignadotEnvironmentsApi {
   getOrganization(): string | undefined;
 }
 
-export const signadotEnvironmentsApiRef = createApiRef<SignadotEnvironmentsApi>({
-  id: "plugin.signadot-environments.service",
+export const signadotApiRef = createApiRef<SignadotEnvironmentsApi>({
+  id: "plugin.signadot.service",
 });
 
 export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {

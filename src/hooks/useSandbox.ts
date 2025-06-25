@@ -1,9 +1,8 @@
 import { useApi } from "@backstage/core-plugin-api";
 import { useCallback, useEffect, useState } from "react";
-import { signadotEnvironmentsApiRef } from "../api/SandboxApi";
-import type { SandboxStatus } from "../internal/types/sandboxLegacy";
+import { sandboxApiRef } from "../api/SandboxApi";
 import type { SandboxV2 } from "../internal/types/sandboxes";
-
+import type { SandboxStatus } from "../internal/types/sandboxLegacy";
 export interface SandboxesData {
   sandboxesList: SandboxV2[] | null;
   error: string | null;
@@ -17,7 +16,7 @@ export interface SandboxStatusesData {
 }
 
 export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
-  const sandboxApi = useApi(signadotEnvironmentsApiRef);
+  const sandboxApi = useApi(sandboxApiRef);
   const [data, setData] = useState<SandboxesData>({
     sandboxesList: null,
     error: null,
@@ -55,7 +54,7 @@ export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
 };
 
 export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData => {
-  const sandboxApi = useApi(signadotEnvironmentsApiRef);
+  const sandboxApi = useApi(sandboxApiRef);
   const [data, setData] = useState<SandboxStatusesData>({
     statuses: null,
     error: null,

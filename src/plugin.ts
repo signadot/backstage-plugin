@@ -1,17 +1,20 @@
-import { configApiRef, createApiFactory, createComponentExtension, createPlugin, createRoutableExtension, discoveryApiRef, fetchApiRef } from "@backstage/core-plugin-api";
-
-import { SandboxClient, signadotEnvironmentsApiRef } from "./api/SandboxApi";
-
+import {
+  configApiRef,
+  createApiFactory,
+  createComponentExtension,
+  createPlugin,
+  createRoutableExtension,
+  discoveryApiRef,
+  fetchApiRef,
+} from "@backstage/core-plugin-api";
+import { SandboxClient, sandboxApiRef } from "./api/SandboxApi";
 import { rootRouteRef } from "./routes";
 
-export const signadotEnvironmentsPlugin = createPlugin({
-  id: "signadot-environments",
-  routes: {
-    root: rootRouteRef,
-  },
+export const signadotPlugin = createPlugin({
+  id: "signadot",
   apis: [
     createApiFactory({
-      api: signadotEnvironmentsApiRef,
+      api: sandboxApiRef,
       deps: {
         fetchApi: fetchApiRef,
         configApi: configApiRef,
@@ -28,10 +31,12 @@ export const signadotEnvironmentsPlugin = createPlugin({
       },
     }),
   ],
+  routes: {
+    root: rootRouteRef,
+  },
 });
 
-
-export const SignadotEnvironmentsPage = signadotEnvironmentsPlugin.provide(
+export const SignadotEnvironmentsPage = signadotPlugin.provide(
   createRoutableExtension({
     name: "SignadotEnvironmentsPage",
     component: () => import("./components/SignadotEnvironmentsPage").then((m) => m.SignadotEnvironmentsPage),
@@ -39,11 +44,11 @@ export const SignadotEnvironmentsPage = signadotEnvironmentsPlugin.provide(
   }),
 );
 
-export const SandboxesCard = signadotEnvironmentsPlugin.provide(
+export const SandboxesCard = signadotPlugin.provide(
   createComponentExtension({
     name: "SandboxesCard",
     component: {
-      lazy: () => import("./components/SandboxesCard/SandboxesCard").then((m) => m.SandboxesCard),
+      lazy: () => import("./components/SandboxesCard").then((m) => m.SandboxesCard),
     },
   }),
 );

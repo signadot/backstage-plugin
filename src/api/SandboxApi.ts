@@ -15,8 +15,8 @@ export interface SandboxApi {
   getSandboxStatuses(): Promise<SandboxStatusesResponse>;
 }
 
-export const signadotEnvironmentsApiRef = createApiRef<SandboxApi>({
-  id: "plugin.signadot-environments.sandbox",
+export const sandboxApiRef = createApiRef<SandboxApi>({
+  id: "plugin.signadot.sandbox",
 });
 
 export class SandboxClient implements SandboxApi {
@@ -38,7 +38,7 @@ export class SandboxClient implements SandboxApi {
     const apiKey = options.configApi.getString("signadot.apiKey");
 
     this.headers = {
-      "signadot-api-key": "***REMOVED***",
+      "signadot-api-key": apiKey,
       "Content-Type": "application/json",
     };
   }

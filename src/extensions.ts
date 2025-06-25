@@ -1,20 +1,24 @@
-import { createComponentExtension, createRoutableExtension } from "@backstage/core-plugin-api";
-import { signadotEnvironmentsPlugin } from "./plugin";
-import { rootRouteRef } from "./routes";
+import { createComponentExtension } from '@backstage/core-plugin-api';
+import { signadotPlugin } from './plugin';
 
-export const SignadotEnvironmentsPage = signadotEnvironmentsPlugin.provide(
-  createRoutableExtension({
-    name: "SignadotEnvironmentsPage",
-    component: () => import("./components/SignadotEnvironmentsPage").then((m) => m.SignadotEnvironmentsPage),
-    mountPoint: rootRouteRef,
+export const SignadotEnvironmentsPage = signadotPlugin.provide(
+  createComponentExtension({
+    name: 'SignadotEnvironmentsPage',
+    component: {
+      lazy: () =>
+        import('./components/SignadotEnvironmentsPage').then(
+          m => m.SignadotEnvironmentsPage,
+        ),
+    },
   }),
 );
 
-export const SandboxesCard = signadotEnvironmentsPlugin.provide(
+export const SandboxesCard = signadotPlugin.provide(
   createComponentExtension({
-    name: "SandboxesCard",
+    name: 'SandboxesCard',
     component: {
-      lazy: () => import("./components/SandboxesCard/SandboxesCard").then((m) => m.SandboxesCard),
+      lazy: () =>
+        import('./components/SandboxesCard').then(m => m.SandboxesCard),
     },
   }),
 );
