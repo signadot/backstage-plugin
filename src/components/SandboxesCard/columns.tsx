@@ -1,4 +1,5 @@
 import { Link } from "@backstage/core-components";
+import { Chip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import type { SandboxV2 } from "../../internal/types/sandboxes";
@@ -21,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
   statusNotReady: {
     backgroundColor: theme.palette.error.main,
   },
+  sandboxLabels: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: theme.spacing(1),
+  },
 }));
 
 export const SandboxName = ({ name, status }: SandboxV2) => {
@@ -36,6 +43,31 @@ export const SandboxName = ({ name, status }: SandboxV2) => {
         })}
       ></div>
       <Link to={redirectUrl}>{name}</Link>
+    </div>
+  );
+};
+
+const isSignadotLabel = (label: [string, string]) => {
+  return label[0].startsWith("signadot");
+};
+
+export const SandboxLabels = ({ spec }: SandboxV2) => {
+  const classes = useStyles();
+
+  let labels: Array<[string, string]> = [];
+  if (spec?.labels) {
+    labels = Object.entries(spec.labels);
+  }
+
+  return (
+    <div className={classes.sandboxLabels}>
+      {labels.map((label) => (
+        <Chip
+          color={isSignadotLabel(label) ? "primary" : "secondary"}
+          key={label[0]}
+          label={`${label[0]}: ${label[1]}`}
+        />
+      ))}
     </div>
   );
 };

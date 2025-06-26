@@ -2,7 +2,7 @@ import { Link, Progress, Table, type TableColumn } from "@backstage/core-compone
 import { makeStyles } from "@material-ui/core/styles";
 import { useSandboxes } from "../../hooks/useSandbox";
 import type { SandboxV2 } from "../../internal/types/sandboxes";
-import { SandboxName } from "./columns";
+import { SandboxLabels, SandboxName } from "./columns";
 
 const useStyles = makeStyles((theme) => ({
   emptyContent: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type AllowedColumns = "name" | "createdAt" | "updatedAt" | "routingKey" | "clusterName";
+type AllowedColumns = "name" | "createdAt" | "updatedAt" | "routingKey" | "clusterName" | "labels";
 
 export type SandboxCardProps = {
   columns?: Array<AllowedColumns>;
@@ -65,6 +65,7 @@ export const SandboxesCard = ({ columns: filterColumns, clusterName }: SandboxCa
     },
     { title: "Created At", field: "createdAt", hidden: !showColumn("createdAt", filterColumns) },
     { title: "Updated At", field: "updatedAt", hidden: !showColumn("updatedAt", filterColumns) },
+    { title: "Labels", field: "labels", hidden: !showColumn("labels", filterColumns), render: (rowData) => <SandboxLabels {...rowData} /> },
     { title: "Routing Key", field: "routingKey", hidden: !showColumn("routingKey", filterColumns) },
     {
       title: "Cluster Name",
