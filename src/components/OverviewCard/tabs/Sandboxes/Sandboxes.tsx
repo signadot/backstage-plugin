@@ -7,7 +7,7 @@ import React from "react";
 import { useSandboxes } from "../../../../hooks/useSandbox";
 import type { SandboxV2 } from "../../../../internal/types/sandboxes";
 import { getDashboardUrl } from "../../../../utils/getDashboardUrl";
-import BaseWidget from "../../../ui/BaseWidget";
+import BaseWidget from "../../../ui/BaseWidget/BaseWidget";
 import useGetStatus from "./useGetStatus";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const Sandboxes = () => {
   const classes = useStyles();
   const sandboxesStatus = useGetStatus();
@@ -79,15 +78,23 @@ const Sandboxes = () => {
         if (!a.updatedAt || !b.updatedAt) return 0;
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
       })
-      .slice(0, 3);
+      .slice(0, 5);
   }, [sandboxesList]);
+
+  const handleReadyClick = () => {
+    window.open(getDashboardUrl("/sandboxes", "q=status%3Aready"), "_blank");
+  };
+
+  const handleNotReadyClick = () => {
+    window.open(getDashboardUrl("/sandboxes", "q=status%3Anot%2520ready"), "_blank");
+  };
 
   const renderStatus = () => {
     if (sandboxesStatus.isLoading || sandboxesStatus.isError) {
       return (
         <>
-          <BaseWidget.Status message="0 ready" onClick={() => {}} type="success" />
-          <BaseWidget.Status message="0 not ready" onClick={() => {}} type="error" />
+          <BaseWidget.Status message="0 ready" onClick={handleReadyClick} type="success" />
+          <BaseWidget.Status message="0 not ready" onClick={handleNotReadyClick} type="error" />
         </>
       );
     }
@@ -95,12 +102,12 @@ const Sandboxes = () => {
       <>
         <BaseWidget.Status
           message={`${(sandboxesStatus as { totalSandboxes: number }).totalSandboxes} ready`}
-          onClick={() => {}}
+          onClick={handleReadyClick}
           type="success"
         />
         <BaseWidget.Status
           message={`${(sandboxesStatus as { notReady: number }).notReady} not ready`}
-          onClick={() => {}}
+          onClick={handleNotReadyClick}
           type="error"
         />
       </>
@@ -124,7 +131,7 @@ const Sandboxes = () => {
           <div className={classes.recentList}>
             {recentSandboxes.map((sandbox) => (
               <div className={classes.recentItem} key={sandbox.name}>
-                <Link className={classes.sandboxName} to={getDashboardUrl(`/sandbox/name/${sandbox.name}`)}>
+                <Link className={classes.sandboxName} to={getDashboardUrl(`/sandboxes/name/${sandbox.name}`)}>
                   {sandbox.name}
                 </Link>
                 <span className={classes.timeAgo}>
