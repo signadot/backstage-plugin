@@ -8,7 +8,7 @@ export const SignadotEnvironmentsPage = () => {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         {/* <SandboxesCard /> */}
-        <OverviewCard />
+        <OverviewCard sandboxes={{ maxRecentSandboxes: 2 }} />
       </Grid>
     </Grid>
   );

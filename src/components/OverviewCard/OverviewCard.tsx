@@ -42,7 +42,23 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const OverviewCard = () => {
+export type OverviewCardProps = {
+  title?: string;
+  sandboxes?: {
+    maxRecentSandboxes?: number;
+  };
+};
+
+const DEFAULT_PROPS: OverviewCardProps = {
+  title: "Signadot Overview",
+  sandboxes: {
+    maxRecentSandboxes: 5,
+  },
+};
+
+const OverviewCard = (props: OverviewCardProps) => {
+  const { title, sandboxes } = { ...DEFAULT_PROPS, ...props };
+
   const classes = useStyles();
   const { sandboxesList, loading } = useSandboxes();
   const [value, setValue] = useState(0);
@@ -60,14 +76,14 @@ const OverviewCard = () => {
           <Tab label="Clusters" />
         </Tabs>
       }
-      title="Signadot Overview"
+      title={title}
       variant="flex"
     >
       <TabPanel index={0} value={value}>
         <Typography>Notifications Content</Typography>
       </TabPanel>
       <TabPanel index={1} value={value}>
-        <Sandboxes />
+        <Sandboxes maxRecentSandboxes={sandboxes?.maxRecentSandboxes} />
       </TabPanel>
       <TabPanel index={2} value={value}>
         <Typography>Clusters Content</Typography>
