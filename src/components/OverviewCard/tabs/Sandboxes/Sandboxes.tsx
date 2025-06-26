@@ -66,7 +66,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sandboxes = () => {
+export type SandboxesProps = {
+  maxRecentSandboxes?: number;
+};
+
+const Sandboxes = (props: SandboxesProps) => {
+  const { maxRecentSandboxes } = { maxRecentSandboxes: 5, ...props };
+
   const classes = useStyles();
   const sandboxesStatus = useGetStatus();
   const { sandboxesList, loading } = useSandboxes();
@@ -77,9 +83,9 @@ const Sandboxes = () => {
       .sort((a: SandboxV2, b: SandboxV2) => {
         if (!a.updatedAt || !b.updatedAt) return 0;
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-      })
-      .slice(0, 5);
-  }, [sandboxesList]);
+      })  
+      .slice(0, maxRecentSandboxes);
+  }, [sandboxesList, maxRecentSandboxes]);
 
   const handleReadyClick = () => {
     window.open(getDashboardUrl("/sandboxes", "q=status%3Aready"), "_blank");
