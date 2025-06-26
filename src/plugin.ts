@@ -5,26 +5,24 @@ import {
   discoveryApiRef,
   fetchApiRef,
 } from "@backstage/core-plugin-api";
-import { SandboxClient, sandboxApiRef } from "./api/SandboxApi";
+import { SignadotEnvironmentsApiImpl, signadotApiRef } from "./api";
 import { rootRouteRef } from "./routes";
 
 export const signadotPlugin = createPlugin({
   id: "signadot",
   apis: [
     createApiFactory({
-      api: sandboxApiRef,
+      api: signadotApiRef,
       deps: {
         fetchApi: fetchApiRef,
         configApi: configApiRef,
         discoveryApi: discoveryApiRef,
       },
       factory: ({ fetchApi, configApi, discoveryApi }) => {
-        const orgName = configApi.getString("signadot.org");
-        return new SandboxClient({
+        return new SignadotEnvironmentsApiImpl({
           fetchApi,
           configApi,
           discoveryApi,
-          orgName,
         });
       },
     }),
