@@ -1,6 +1,6 @@
 import { useApi } from "@backstage/core-plugin-api";
 import { useCallback, useEffect, useState } from "react";
-import { sandboxApiRef } from "../api/SandboxApi";
+import { signadotApiRef } from "../api";
 import type { SandboxV2 } from "../internal/types/sandboxes";
 import type { SandboxStatus } from "../internal/types/sandboxLegacy";
 export interface SandboxesData {
@@ -16,7 +16,7 @@ export interface SandboxStatusesData {
 }
 
 export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
-  const sandboxApi = useApi(sandboxApiRef);
+  const signadotApi = useApi(signadotApiRef);
   const [data, setData] = useState<SandboxesData>({
     sandboxesList: null,
     error: null,
@@ -25,7 +25,7 @@ export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await sandboxApi.getSandboxes();
+      const response = await signadotApi.sandboxes.getSandboxes();
       setData({
         sandboxesList: response.sandboxesList,
         error: null,
@@ -38,7 +38,7 @@ export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
         loading: false,
       });
     }
-  }, [sandboxApi]);
+  }, [signadotApi]);
 
   useEffect(() => {
     fetchData();
@@ -54,7 +54,7 @@ export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
 };
 
 export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData => {
-  const sandboxApi = useApi(sandboxApiRef);
+  const signadotApi = useApi(signadotApiRef);
   const [data, setData] = useState<SandboxStatusesData>({
     statuses: null,
     error: null,
@@ -63,7 +63,7 @@ export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await sandboxApi.getSandboxStatuses();
+      const response = await signadotApi.sandboxes.getSandboxStatuses();
       setData({
         statuses: response.statuses,
         error: null,
@@ -76,7 +76,7 @@ export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData
         loading: false,
       });
     }
-  }, [sandboxApi]);
+  }, [signadotApi]);
 
   useEffect(() => {
     fetchData();
