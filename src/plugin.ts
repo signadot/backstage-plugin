@@ -1,9 +1,7 @@
 import {
   configApiRef,
   createApiFactory,
-  createComponentExtension,
   createPlugin,
-  createRoutableExtension,
   discoveryApiRef,
   fetchApiRef,
 } from "@backstage/core-plugin-api";
@@ -36,19 +34,3 @@ export const signadotPlugin = createPlugin({
   },
 });
 
-export const SignadotEnvironmentsPage = signadotPlugin.provide(
-  createRoutableExtension({
-    name: "SignadotEnvironmentsPage",
-    component: () => import("./components/SignadotEnvironmentsPage").then((m) => m.SignadotEnvironmentsPage),
-    mountPoint: rootRouteRef,
-  }),
-);
-
-export const SandboxesCard = signadotPlugin.provide(
-  createComponentExtension({
-    name: "SandboxesCard",
-    component: {
-      lazy: () => import("./components/SandboxesCard").then((m) => m.SandboxesCard),
-    },
-  }),
-);

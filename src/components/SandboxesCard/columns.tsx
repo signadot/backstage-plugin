@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SandboxName = ({ name, status }: SandboxV2) => {
-  const redirectUrl = getDashboardUrl(`/sandboxes/name/${name}`);
+  const redirectUrl = getDashboardUrl(`/sandbox/name/${name}`);
   const classes = useStyles();
 
   return (
