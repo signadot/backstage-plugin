@@ -1,6 +1,3 @@
-export { SignadotEnvironmentsPage } from "./extensions";
+export { SandboxesCard, SignadotEnvironmentsPage } from "./extensions";
 export * from "./hooks/useSandbox";
-export {
-  SandboxesCard,
-  signadotPlugin,
-} from "./plugin";
+export { signadotPlugin } from "./plugin";
