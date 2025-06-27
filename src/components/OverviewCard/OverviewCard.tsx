@@ -6,6 +6,7 @@ import type React from "react";
 import { useState } from "react";
 import { useSandboxes } from "../../hooks/useSandbox";
 import type { SandboxV2 } from "../../internal/types/sandboxes";
+import { Notifications } from "./tabs/Notifications/Notifications";
 import Sandboxes from "./tabs/Sandboxes/Sandboxes";
 
 interface TabPanelProps {
@@ -80,7 +81,7 @@ const OverviewCard = (props: OverviewCardProps) => {
       variant="flex"
     >
       <TabPanel index={0} value={value}>
-        <Typography>Notifications Content</Typography>
+        <Notifications />
       </TabPanel>
       <TabPanel index={1} value={value}>
         <Sandboxes maxRecentSandboxes={sandboxes?.maxRecentSandboxes} />
