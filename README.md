@@ -2,8 +2,6 @@
 
 Welcome to the signadot plugin!
 
-_This plugin was created through the Backstage CLI_
-
 ## Getting started
 
 ### Configuration
@@ -21,9 +19,7 @@ And also add the following proxy in `app-config.yaml`:
 proxy:
   endpoints:
     '/signadot':
-      target: https://api.***REMOVED***.signadot.com
-      headers:
-        'signadot-api-key': your_api_key
+      target: https://api.signadot.com
       changeOrigin: true
       allowedHeaders:
         - 'signadot-api-key'
