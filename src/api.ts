@@ -5,6 +5,7 @@ import {
   type DiscoveryApi,
   type FetchApi,
 } from "@backstage/core-plugin-api";
+import { type OperatorVersion, parseOperatorVersion } from "./internal/api/OperatorVersion";
 import type { GetUserMessagesResponse } from "./internal/types/messages";
 import type { SandboxV2 } from "./internal/types/sandboxes";
 import type { SandboxStatus } from "./internal/types/sandboxLegacy";
@@ -17,6 +18,27 @@ export interface SandboxStatusesResponse {
   statuses: SandboxStatus[];
 }
 
+export interface ClusterStatusResponse {
+  Statuses: {
+    status: {
+      healthy: boolean;
+      reason: string;
+      message: string;
+    };
+  }[];
+}
+
+export interface ClustersResponse {
+  clusters: {
+    operatorVersion?: string;
+  }[];
+}
+
+export interface LatestOperatorVersionResponse {
+  version: string;
+  releaseNotes: string;
+}
+
 export interface SandboxApi {
   getSandboxes(): Promise<SandboxesResponse>;
   getSandboxStatuses(): Promise<SandboxStatusesResponse>;
@@ -26,11 +48,22 @@ export interface MessagesApi {
   getUserMessages(): Promise<GetUserMessagesResponse>;
 }
 
+export interface ClustersApi {
+  getClusterStatus(): Promise<ClusterStatusResponse>;
+  getClusters(): Promise<ClustersResponse>;
+}
+
+export interface OperatorVersionApi {
+  getLatestOperatorVersion(): Promise<LatestOperatorVersionResponse>;
+}
+
 export interface SignadotEnvironmentsApi {
   getApiBaseUrl(): string;
   getOrganization(): string;
   sandboxes: SandboxApi;
   messages: MessagesApi;
+  clusters: ClustersApi;
+  operatorVersion: OperatorVersionApi;
 }
 
 export const signadotApiRef = createApiRef<SignadotEnvironmentsApi>({
@@ -105,6 +138,22 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
   messages: MessagesApi = {
     getUserMessages: async (): Promise<GetUserMessagesResponse> => {
       return this.fetch<GetUserMessagesResponse>(`/api/v2/orgs/${this.org}/users/self/messages`);
+    },
+  };
+
+  clusters: ClustersApi = {
+    getClusterStatus: async (): Promise<ClusterStatusResponse> => {
+      return this.fetch<ClusterStatusResponse>(`/api/v1/orgs/${this.org}/clusters/status`);
+    },
+
+    getClusters: async (): Promise<ClustersResponse> => {
+      return this.fetch<ClustersResponse>(`/api/v1/orgs/${this.org}/clusters`);
+    },
+  };
+
+  operatorVersion: OperatorVersionApi = {
+    getLatestOperatorVersion: async (): Promise<LatestOperatorVersionResponse> => {
+      return this.fetch<LatestOperatorVersionResponse>(`/api/v1/vars/latest-operator-version`);
     },
   };
 }

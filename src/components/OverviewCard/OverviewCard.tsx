@@ -1,11 +1,8 @@
-import { InfoCard, Table, type TableColumn } from "@backstage/core-components";
-import { Box, Button, Tab, Tabs, Typography } from "@material-ui/core";
+import { InfoCard } from "@backstage/core-components";
+import { Box, Tab, Tabs } from "@material-ui/core";
 import { makeStyles, type Theme } from "@material-ui/core/styles";
-import { formatDistanceToNow } from "date-fns";
-import type React from "react";
-import { useState } from "react";
-import { useSandboxes } from "../../hooks/useSandbox";
-import type { SandboxV2 } from "../../internal/types/sandboxes";
+import * as React from "react";
+import Clusters from "./tabs/Clusters/Clusters";
 import { Notifications } from "./tabs/Notifications/Notifications";
 import Sandboxes from "./tabs/Sandboxes/Sandboxes";
 
@@ -61,8 +58,7 @@ const OverviewCard = (props: OverviewCardProps) => {
   const { title, sandboxes } = { ...DEFAULT_PROPS, ...props };
 
   const classes = useStyles();
-  const { sandboxesList, loading } = useSandboxes();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -87,7 +83,7 @@ const OverviewCard = (props: OverviewCardProps) => {
         <Sandboxes maxRecentSandboxes={sandboxes?.maxRecentSandboxes} />
       </TabPanel>
       <TabPanel index={2} value={value}>
-        <Typography>Clusters Content</Typography>
+        <Clusters />
       </TabPanel>
     </InfoCard>
   );
