@@ -1,4 +1,11 @@
-import { type ConfigApi, configApiRef, createApiRef, type DiscoveryApi, type FetchApi } from "@backstage/core-plugin-api";
+import {
+  type ConfigApi,
+  configApiRef,
+  createApiRef,
+  type DiscoveryApi,
+  type FetchApi,
+} from "@backstage/core-plugin-api";
+import type { GetUserMessagesResponse } from "./internal/types/messages";
 import type { SandboxV2 } from "./internal/types/sandboxes";
 import type { SandboxStatus } from "./internal/types/sandboxLegacy";
 
@@ -15,10 +22,15 @@ export interface SandboxApi {
   getSandboxStatuses(): Promise<SandboxStatusesResponse>;
 }
 
+export interface MessagesApi {
+  getUserMessages(): Promise<GetUserMessagesResponse>;
+}
+
 export interface SignadotEnvironmentsApi {
   getApiBaseUrl(): string;
   getOrganization(): string;
   sandboxes: SandboxApi;
+  messages: MessagesApi;
 }
 
 export const signadotApiRef = createApiRef<SignadotEnvironmentsApi>({
@@ -87,6 +99,12 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
 
     getSandboxStatuses: async (): Promise<SandboxStatusesResponse> => {
       return this.fetch<SandboxStatusesResponse>(`/api/v1/orgs/${this.org}/sandboxes/status`);
+    },
+  };
+
+  messages: MessagesApi = {
+    getUserMessages: async (): Promise<GetUserMessagesResponse> => {
+      return this.fetch<GetUserMessagesResponse>(`/api/v2/orgs/${this.org}/users/self/messages`);
     },
   };
 }
