@@ -1,9 +1,9 @@
-import { useApi } from "@backstage/core-plugin-api";
 import { useCallback, useEffect, useState } from "react";
-import { type ClusterStatusResponse, type ClustersResponse, signadotApiRef } from "../api";
+import { type ClusterStatusResponse, type ClustersResponse } from "../api";
+import { useSignadotClient } from "./useSignadotClient";
 
 export function useClusters() {
-  const api = useApi(signadotApiRef);
+  const api = useSignadotClient();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [clusterStatus, setClusterStatus] = useState<ClusterStatusResponse | null>(null);

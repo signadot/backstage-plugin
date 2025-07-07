@@ -1,8 +1,8 @@
-import { useApi } from "@backstage/core-plugin-api";
 import { useCallback, useEffect, useState } from "react";
-import { signadotApiRef } from "../api";
 import type { SandboxV2 } from "../internal/types/sandboxes";
 import type { SandboxStatus } from "../internal/types/sandboxLegacy";
+import { useSignadotClient } from "./useSignadotClient";
+
 export interface SandboxesData {
   sandboxesList: SandboxV2[] | null;
   error: string | null;
@@ -16,7 +16,7 @@ export interface SandboxStatusesData {
 }
 
 export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
-  const signadotApi = useApi(signadotApiRef);
+  const signadotApi = useSignadotClient();
   const [data, setData] = useState<SandboxesData>({
     sandboxesList: null,
     error: null,
@@ -54,7 +54,7 @@ export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
 };
 
 export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData => {
-  const signadotApi = useApi(signadotApiRef);
+  const signadotApi = useSignadotClient();
   const [data, setData] = useState<SandboxStatusesData>({
     statuses: null,
     error: null,

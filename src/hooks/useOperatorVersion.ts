@@ -1,60 +1,43 @@
-import { useApi } from "@backstage/core-plugin-api";
-import { useEffect, useMemo, useState } from "react";
-import { type LatestOperatorVersionResponse, signadotApiRef } from "../api";
+import { useCallback, useEffect, useState } from "react";
+import { useSignadotClient } from "./useSignadotClient";
 import { type OperatorVersion, parseOperatorVersion } from "../internal/api/OperatorVersion";
+import { type LatestOperatorVersionResponse } from "../api";
 
-export type LatestOperatorVersionData = {
+export interface OperatorVersionData {
   version: OperatorVersion | null;
   releaseNotes: string | null;
-  error: string | null;
-};
+  loading: boolean;
+  error: Error | null;
+}
 
-export function useLatestOperatorVersion(): LatestOperatorVersionData {
-  const api = useApi(signadotApiRef);
-  const [data, setData] = useState<LatestOperatorVersionResponse | null>(null);
+export function useOperatorVersion(): OperatorVersionData {
+  const api = useSignadotClient();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [data, setData] = useState<LatestOperatorVersionResponse | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await api.operatorVersion.getLatestOperatorVersion();
-        setData(result);
-        setError(null);
-      } catch (err) {
-        setError(err as Error);
-        setData(null);
-      }
-    };
-
-    fetchData();
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await api.operatorVersion.getLatestOperatorVersion();
+      setData(response);
+      setError(null);
+    } catch (err) {
+      setError(err as Error);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
   }, [api]);
 
-  const operatorVersion = useMemo(() => {
-    if (!data) {
-      return null;
-    }
-    return parseOperatorVersion(data.version);
-  }, [data]);
-
-  if (error) {
-    return {
-      version: null,
-      releaseNotes: null,
-      error: error.message,
-    };
-  }
-
-  if (!data) {
-    return {
-      version: null,
-      releaseNotes: null,
-      error: null,
-    };
-  }
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return {
-    version: operatorVersion,
-    releaseNotes: data.releaseNotes,
-    error: null,
+    version: data ? parseOperatorVersion(data.version) : null,
+    releaseNotes: data?.releaseNotes ?? null,
+    loading,
+    error,
   };
 }
