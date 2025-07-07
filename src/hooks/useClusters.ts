@@ -1,40 +1,34 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { ClusterStatusResponse, ClustersResponse } from "../api";
 import { useSignadotClient } from "./useSignadotClient";
+import { useDataFetching } from "./useDataFetching";
+
+interface ClusterData {
+  clusterStatus: ClusterStatusResponse;
+  clusters: ClustersResponse;
+}
 
 export function useClusters() {
   const api = useSignadotClient();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [clusterStatus, setClusterStatus] = useState<ClusterStatusResponse | null>(null);
-  const [clusters, setClusters] = useState<ClustersResponse | null>(null);
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [statusData, clustersData] = await Promise.all([
-        api.clusters.getClusterStatus(),
-        api.clusters.getClusters(),
-      ]);
-      setClusterStatus(statusData);
-      setClusters(clustersData);
-      setError(null);
-    } catch (err) {
-      setError(err as Error);
-    } finally {
-      setLoading(false);
-    }
+  const fetchClusters = useCallback(async () => {
+    const [statusData, clustersData] = await Promise.all([
+      api.clusters.getClusterStatus(),
+      api.clusters.getClusters(),
+    ]);
+    return {
+      clusterStatus: statusData,
+      clusters: clustersData,
+    };
   }, [api]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const { data, loading, error, refresh } = useDataFetching<ClusterData>(fetchClusters);
 
   return {
     loading,
     error,
-    clusterStatus,
-    clusters,
-    refresh: fetchData,
+    clusterStatus: data?.clusterStatus ?? null,
+    clusters: data?.clusters ?? null,
+    refresh,
   };
 }

@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { SandboxV2 } from "../internal/types/sandboxes";
 import type { SandboxStatus } from "../internal/types/sandboxLegacy";
 import { useSignadotClient } from "./useSignadotClient";
+import { useDataFetching } from "./useDataFetching";
 
 export interface SandboxesData {
   sandboxesList: SandboxV2[] | null;
@@ -15,78 +16,42 @@ export interface SandboxStatusesData {
   loading: boolean;
 }
 
-export const useSandboxes = (refreshInterval = 5000): SandboxesData => {
+export const useSandboxes = (refreshInterval = 5000) => {
   const signadotApi = useSignadotClient();
-  const [data, setData] = useState<SandboxesData>({
-    sandboxesList: null,
-    error: null,
-    loading: true,
-  });
-
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await signadotApi.sandboxes.getSandboxes();
-      setData({
-        sandboxesList: response.sandboxesList,
-        error: null,
-        loading: false,
-      });
-    } catch (error) {
-      setData({
-        sandboxesList: null,
-        error: error instanceof Error ? error.message : "An error occurred",
-        loading: false,
-      });
-    }
+  
+  const fetchSandboxes = useCallback(async () => {
+    const response = await signadotApi.sandboxes.getSandboxes();
+    return response.sandboxesList;
   }, [signadotApi]);
 
-  useEffect(() => {
-    fetchData();
+  const { data: sandboxesList, error, loading } = useDataFetching<SandboxV2[]>(
+    fetchSandboxes,
+    { refreshInterval }
+  );
 
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchData, refreshInterval);
-      return () => clearInterval(interval);
-    }
-    return undefined;
-  }, [fetchData, refreshInterval]);
-
-  return data;
+  return {
+    sandboxesList,
+    error: error?.message ?? null,
+    loading,
+  };
 };
 
-export const useSandboxStatuses = (refreshInterval = 30000): SandboxStatusesData => {
+export const useSandboxStatuses = (refreshInterval = 30000) => {
   const signadotApi = useSignadotClient();
-  const [data, setData] = useState<SandboxStatusesData>({
-    statuses: null,
-    error: null,
-    loading: true,
-  });
-
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await signadotApi.sandboxes.getSandboxStatuses();
-      setData({
-        statuses: response.statuses,
-        error: null,
-        loading: false,
-      });
-    } catch (error) {
-      setData({
-        statuses: null,
-        error: error instanceof Error ? error.message : "An error occurred",
-        loading: false,
-      });
-    }
+  
+  const fetchStatuses = useCallback(async () => {
+    const response = await signadotApi.sandboxes.getSandboxStatuses();
+    return response.statuses;
   }, [signadotApi]);
 
-  useEffect(() => {
-    fetchData();
+  const { data: statuses, error, loading } = useDataFetching<SandboxStatus[]>(
+    fetchStatuses,
+    { refreshInterval }
+  );
 
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchData, refreshInterval);
-      return () => clearInterval(interval);
-    }
-    return undefined;
-  }, [fetchData, refreshInterval]);
-
-  return data;
+  return {
+    statuses,
+    error: error?.message ?? null,
+    loading,
+  };
 };
