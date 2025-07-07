@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ApiError, ApiResult } from "../internal/types/api";
+import { ConfigApi, DiscoveryApi, FetchApi, useApi, configApiRef, discoveryApiRef, fetchApiRef } from '@backstage/core-plugin-api';
+import { SignadotEnvironmentsApiImpl } from '../api';
 
 interface UseApiOptions {
   retry?: number;
@@ -54,5 +56,19 @@ function useApi<T>(key: string, endpoint: string, options: UseApiOptions = {}): 
     loading: isLoading,
   };
 }
+
+export const useSignadotClient = () => {
+  const configApi = useApi(configApiRef);
+  const discoveryApi = useApi(discoveryApiRef);
+  const fetchApi = useApi(fetchApiRef);
+
+  const client = new SignadotEnvironmentsApiImpl({
+    fetchApi,
+    configApi,
+    discoveryApi,
+  });
+
+  return client;
+};
 
 export default useApi;

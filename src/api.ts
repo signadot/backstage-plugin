@@ -1,4 +1,5 @@
 import {
+  FetchApi,
   type ConfigApi,
   createApiRef,
   type DiscoveryApi,
@@ -72,8 +73,10 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
   private org: string;
   private readonly discoveryApi: DiscoveryApi;
   private readonly headers: HeadersInit;
+  private readonly fetchApi: FetchApi;
 
   constructor(options: {
+    fetchApi: FetchApi;
     configApi: ConfigApi;
     discoveryApi: DiscoveryApi;
   }) {
@@ -84,6 +87,7 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
     this.apiUrl = apiUrl;
     this.org = org;
     this.discoveryApi = options.discoveryApi;
+    this.fetchApi = options.fetchApi;
     this.headers = {
       "signadot-api-key": apiKey,
       "Content-Type": "application/json",
@@ -105,7 +109,7 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
 
   private async fetch<T>(path: string): Promise<T> {
     const baseUrl = await this.getBaseUrl();
-    const response = await fetch(`${baseUrl}${path}`, {
+    const response = await this.fetchApi.fetch(`${baseUrl}${path}`, {
       headers: this.headers,
     });
 

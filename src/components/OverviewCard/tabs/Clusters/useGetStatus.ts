@@ -1,71 +1,47 @@
-import { useMemo } from "react";
-import type { ApiError } from "../../../../@types/sd/api";
+import { useOperatorVersion } from "../../../../hooks/useOperatorVersion";
 import { useClusters } from "../../../../hooks/useClusters";
-import { useLatestOperatorVersion } from "../../../../hooks/useOperatorVersion";
 import { isObservedVersionLatest, parseOperatorVersion } from "../../../../internal/api/OperatorVersion";
+import type { OperatorVersion } from "../../../../internal/api/OperatorVersion";
 
-type Status =
-  | {
-      isLoading: true;
-      isError: false;
-    }
-  | {
-      error: ApiError | string;
-      isError: true;
-      isLoading: false;
-    }
-  | {
-      isError: false;
-      totalClusters: number;
-      unhealthy: number;
-      pendingUpgrade: number;
-      isLoading: false;
+interface ErrorStatus {
+  isError: true;
+  isLoading: false;
+  error: Error | null;
+}
+
+interface SuccessStatus {
+  isError: false;
+  isLoading: false;
+  totalClusters: number;
+  unhealthy: number;
+  pendingUpgrade: number;
+  operatorVersion: OperatorVersion | null;
+}
+
+interface LoadingStatus {
+  isError: false;
+  isLoading: true;
+}
+
+type Status = ErrorStatus | SuccessStatus | LoadingStatus;
+
+export const useGetStatus = (): Status => {
+  const { loading: clustersLoading, error: clustersError, clusterStatus, clusters } = useClusters();
+  const { loading: operatorLoading, error: operatorError, version } = useOperatorVersion();
+  const waitingOnData = !clusterStatus || clustersLoading || !clusters || !version;
+
+  if (clustersLoading || operatorLoading) {
+    return {
+      isError: false,
+      isLoading: true,
     };
+  }
 
-const useGetStatus = (): Status => {
-  const { loading: isLoading, error, clusterStatus, clusters } = useClusters();
-  const latestOperatorVersionApi = useLatestOperatorVersion();
-  const waitingOnData = !clusterStatus || isLoading || !clusters || !latestOperatorVersionApi.version;
-
-  console.log("clusterStatus", clusterStatus, clusters);
-
-  const unhealthy = useMemo(() => {
-    if (waitingOnData || !clusterStatus) {
-      return 0;
-    }
-    let total = 0;
-    for (let i = 0; i < clusterStatus.Statuses.length; i++) {
-      if (!clusterStatus.Statuses[i].status.healthy) {
-        total++;
-      }
-    }
-    return total;
-  }, [clusterStatus, waitingOnData]);
-
-  const pendingUpgrades = useMemo(() => {
-    if (waitingOnData || !clusters || !latestOperatorVersionApi.version) {
-      return 0;
-    }
-    let total = 0;
-    const { version } = latestOperatorVersionApi;
-    for (let i = 0; i < clusters.clusters?.length; i++) {
-      const c = clusters.clusters[i];
-      if (!c.operatorVersion) {
-        continue;
-      }
-      const clusterVersion = parseOperatorVersion(c.operatorVersion);
-      if (!isObservedVersionLatest(clusterVersion, version)) {
-        total++;
-      }
-    }
-    return total;
-  }, [clusters, latestOperatorVersionApi, waitingOnData]);
-
-  if (error) {
+  if (clustersError || operatorError) {
     return {
       isError: true,
       isLoading: false,
-      error: error.message,
+      error: clustersError || operatorError,
     };
   }
 
@@ -76,16 +52,38 @@ const useGetStatus = (): Status => {
     };
   }
 
-  const totalClusters = waitingOnData
-    ? 0
-    : clusterStatus!.Statuses.filter((clusterStatus) => clusterStatus.status.healthy).length;
+  let totalClusters = 0;
+  let unhealthy = 0;
+  let pendingUpgrades = 0;
+
+  if (clusters && clusters.clusters && clusterStatus) {
+    totalClusters = clusters.clusters.length;
+    
+    // Count unhealthy clusters
+    for (const status of clusterStatus.Statuses) {
+      if (!status.status.healthy) {
+        unhealthy++;
+      }
+    }
+    
+    // Count clusters needing operator upgrades
+    for (const cluster of clusters.clusters) {
+      if (version && cluster.operatorVersion) {
+        const clusterVersion = parseOperatorVersion(cluster.operatorVersion);
+        if (!isObservedVersionLatest(clusterVersion, version)) {
+          pendingUpgrades++;
+        }
+      }
+    }
+  }
 
   return {
     isError: false,
     isLoading: false,
-    unhealthy: unhealthy,
+    totalClusters,
+    unhealthy,
     pendingUpgrade: pendingUpgrades,
-    totalClusters: totalClusters,
+    operatorVersion: version,
   };
 };
 
