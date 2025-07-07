@@ -1,11 +1,8 @@
 import {
   type ConfigApi,
-  configApiRef,
   createApiRef,
   type DiscoveryApi,
-  type FetchApi,
 } from "@backstage/core-plugin-api";
-import { type OperatorVersion, parseOperatorVersion } from "./internal/api/OperatorVersion";
 import type { GetUserMessagesResponse } from "./internal/types/messages";
 import type { SandboxV2 } from "./internal/types/sandboxes";
 import type { SandboxStatus } from "./internal/types/sandboxLegacy";
@@ -73,12 +70,10 @@ export const signadotApiRef = createApiRef<SignadotEnvironmentsApi>({
 export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
   private apiUrl: string;
   private org: string;
-  private readonly fetchApi: FetchApi;
   private readonly discoveryApi: DiscoveryApi;
   private readonly headers: HeadersInit;
 
   constructor(options: {
-    fetchApi: FetchApi;
     configApi: ConfigApi;
     discoveryApi: DiscoveryApi;
   }) {
@@ -88,7 +83,6 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
 
     this.apiUrl = apiUrl;
     this.org = org;
-    this.fetchApi = options.fetchApi;
     this.discoveryApi = options.discoveryApi;
     this.headers = {
       "signadot-api-key": apiKey,
@@ -111,7 +105,7 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
 
   private async fetch<T>(path: string): Promise<T> {
     const baseUrl = await this.getBaseUrl();
-    const response = await this.fetchApi.fetch(`${baseUrl}${path}`, {
+    const response = await fetch(`${baseUrl}${path}`, {
       headers: this.headers,
     });
 
