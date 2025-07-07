@@ -2,6 +2,12 @@
 
 Welcome to the signadot plugin!
 
+## Installation
+
+```bash
+yarn add --cwd packages/app @signadot-dev/backstage-plugin
+```
+
 ## Getting started
 
 ### Configuration
@@ -25,7 +31,9 @@ proxy:
         - 'signadot-api-key'
 ```
 
-### Usage
+## Components
+
+### SandboxesCard
 
 The recommended way to use this plugin is to add the `SandboxesCard` component to your existing pages. Here are some examples of how you can use it in your homepage:
 
@@ -64,23 +72,76 @@ import { SandboxesCard } from '@signadot/backstage-plugin';
 export const HomePage = () => (
   <Grid container spacing={3}>
     <Grid item xs={12}>
-      <SandboxesCard columns={["name", "routingKey"]} />
+      <SandboxesCard columns={["name", "clusterName"]} />
     </Grid>
   </Grid>
 );
 ```
 ![Filtered Cluster Sandboxes](docs/img/sandboxes-card-filter-columns.png)
 
-### Optional: Standalone Page
+### OverviewCard
 
-If you want a dedicated page for Signadot environments, you can add the following route to your `App.tsx`:
+The overview component is inteded to show summaries, overviews and more information related to your usage and so on.
 
+##### Default view
 ```tsx
-import { SignadotEnvironmentsPage } from '@signadot/backstage-plugin';
+import { OverviewCard } from '@signadot/backstage-plugin';
 
-// In your FlatRoutes:
-<Route path="/signadot-environments" element={<SignadotEnvironmentsPage />} />
+export const HomePage = () => (
+  <Grid container spacing={3}>
+    <Grid item xs={12}>
+      <OverviewCard />
+    </Grid>
+  </Grid>
+);
 ```
+![Dev Cluster Sandboxes](docs/img/overview-all-tabs.png)
+
+##### Clusters Tab Only
+```tsx
+import { OverviewCard } from '@signadot/backstage-plugin';
+
+export const HomePage = () => (
+  <Grid container spacing={3}>
+    <Grid item xs={12}>
+      <OverviewCard defaultTab="clusters" />
+    </Grid>
+  </Grid>
+);
+```
+![Clusters Tab](docs/img/overview-clusters-tab.png)
+
+##### Selected Tabs
+```tsx
+import { OverviewCard } from '@signadot/backstage-plugin';
+
+export const HomePage = () => (
+  <Grid container spacing={3}>
+    <Grid item xs={12}>
+      <OverviewCard tabs={["sandboxes", "clusters"]} />
+    </Grid>
+  </Grid>
+);
+```
+![Two Tabs](docs/img/overview-two-tabs.png)
+
+## Component Props
+
+### SandboxesCard Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `columns` | `Array<"name" \| "createdAt" \| "updatedAt" \| "routingKey" \| "clusterName" \| "labels">` | `undefined` | Customize which columns to display |
+| `clusterName` | `string` | `undefined` | Filter sandboxes by cluster name |
+
+### OverviewCard Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | `"Signadot Overview"` | Custom title for the card |
+| `sandboxes` | `{ maxRecentSandboxes?: number }` | `{ maxRecentSandboxes: 5 }` | Configuration for the sandboxes tab |
+| `tabs` | `Array<"notifications" \| "sandboxes" \| "clusters">` | `["notifications", "sandboxes", "clusters"]` | Specify which tabs to show |
+
 ## Local Development
 
 You can serve the plugin in isolation by running `yarn start` in the plugin directory.
