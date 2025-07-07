@@ -68,7 +68,7 @@ const OverviewCard = (props: OverviewCardProps) => {
     <InfoCard
       subheader={
         <Tabs aria-label="overview tabs" onChange={handleChange} value={value}>
-          {tabs.map((tab) => (
+          {tabs?.map((tab) => (
             <Tab key={tab} label={tabComponents[tab].label} />
           ))}
         </Tabs>
@@ -76,8 +76,8 @@ const OverviewCard = (props: OverviewCardProps) => {
       title={title}
       variant="flex"
     >
-      {tabs.map((tab) => (
-        <TabPanel index={value} key={tab} value={value}>
+      {tabs?.map((tab, index) => (
+        <TabPanel index={index} key={tab} value={value}>
           {tabComponents[tab].component}
         </TabPanel>
       ))}
