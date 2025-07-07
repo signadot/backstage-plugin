@@ -1,6 +1,5 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import * as React from "react";
 import { getDashboardUrl } from "../../../../utils/getDashboardUrl";
 import BaseWidget from "../../../ui/BaseWidget/BaseWidget";
 import useGetStatus from "./useGetStatus";

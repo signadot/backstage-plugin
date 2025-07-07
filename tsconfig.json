@@ -5,6 +5,7 @@
   "compilerOptions": {
     "outDir": "dist-types",
     "rootDir": "src",
-    "composite": true
+    "composite": true,
+    "jsx": "react-jsx"
   }
 } 

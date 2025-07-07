@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
 import Warning from "@material-ui/icons/Warning";
-import React from "react";
 
 export type StatusProps = {
   type: "error" | "warning" | "success";
