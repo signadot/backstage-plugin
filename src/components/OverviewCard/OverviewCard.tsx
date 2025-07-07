@@ -1,6 +1,5 @@
 import { InfoCard } from "@backstage/core-components";
 import { Box, Tab, Tabs } from "@material-ui/core";
-import { makeStyles, type Theme } from "@material-ui/core/styles";
 import { type ChangeEvent, type ReactNode, useState } from "react";
 import Clusters from "./tabs/Clusters/Clusters";
 import { Notifications } from "./tabs/Notifications/Notifications";
@@ -28,23 +27,12 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-  title: {
-    margin: theme.spacing(1, 0, 2, 0),
-    fontWeight: theme.typography.fontWeightMedium as number,
-    fontSize: "1.2rem",
-  },
-}));
-
 export type OverviewCardProps = {
   title?: string;
   sandboxes?: {
     maxRecentSandboxes?: number;
   };
+  tabs?: Array<"notifications" | "sandboxes" | "clusters">;
 };
 
 const DEFAULT_PROPS: OverviewCardProps = {
@@ -52,10 +40,11 @@ const DEFAULT_PROPS: OverviewCardProps = {
   sandboxes: {
     maxRecentSandboxes: 5,
   },
+  tabs: ["notifications", "sandboxes", "clusters"],
 };
 
 const OverviewCard = (props: OverviewCardProps) => {
-  const { title, sandboxes } = { ...DEFAULT_PROPS, ...props };
+  const { title, sandboxes, tabs } = { ...DEFAULT_PROPS, ...props };
 
   const [value, setValue] = useState(0);
 
@@ -63,27 +52,35 @@ const OverviewCard = (props: OverviewCardProps) => {
     setValue(newValue);
   };
 
+  const tabComponents = {
+    notifications: {
+      label: "Notifications",
+      component: <Notifications />,
+    },
+    sandboxes: {
+      label: "Sandboxes",
+      component: <Sandboxes maxRecentSandboxes={sandboxes?.maxRecentSandboxes} />,
+    },
+    clusters: { label: "Clusters", component: <Clusters /> },
+  } as const;
+
   return (
     <InfoCard
       subheader={
         <Tabs aria-label="overview tabs" onChange={handleChange} value={value}>
-          <Tab label="Notifications" />
-          <Tab label="Sandboxes" />
-          <Tab label="Clusters" />
+          {tabs.map((tab) => (
+            <Tab key={tab} label={tabComponents[tab].label} />
+          ))}
         </Tabs>
       }
       title={title}
       variant="flex"
     >
-      <TabPanel index={0} value={value}>
-        <Notifications />
-      </TabPanel>
-      <TabPanel index={1} value={value}>
-        <Sandboxes maxRecentSandboxes={sandboxes?.maxRecentSandboxes} />
-      </TabPanel>
-      <TabPanel index={2} value={value}>
-        <Clusters />
-      </TabPanel>
+      {tabs.map((tab) => (
+        <TabPanel index={value} key={tab} value={value}>
+          {tabComponents[tab].component}
+        </TabPanel>
+      ))}
     </InfoCard>
   );
 };
