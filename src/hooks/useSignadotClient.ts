@@ -1,5 +1,5 @@
-import { useApi, configApiRef, discoveryApiRef, fetchApiRef } from '@backstage/core-plugin-api';
-import { SignadotEnvironmentsApiImpl } from '../api';
+import { configApiRef, discoveryApiRef, fetchApiRef, useApi } from "@backstage/core-plugin-api";
+import { SignadotEnvironmentsApiImpl } from "../api";
 
 export const useSignadotClient = () => {
   const configApi = useApi(configApiRef);
@@ -13,4 +13,4 @@ export const useSignadotClient = () => {
   });
 
   return client;
-}; 
+};

@@ -1,19 +1,19 @@
+import { configApiRef, discoveryApiRef, fetchApiRef, useApi as useBackstageApi} from "@backstage/core-plugin-api";
 import { useEffect, useState } from "react";
+import { SignadotEnvironmentsApiImpl } from "../api";
 import type { ApiError, ApiResult } from "../internal/types/api";
-import { ConfigApi, DiscoveryApi, FetchApi, useApi, configApiRef, discoveryApiRef, fetchApiRef } from '@backstage/core-plugin-api';
-import { SignadotEnvironmentsApiImpl } from '../api';
 
 interface UseApiOptions {
   retry?: number;
 }
 
-type UseApiResponse<T> = ApiResult<T> &  {
+type UseApiResponse<T> = ApiResult<T> & {
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
   error: ApiError | null;
   data: T | null;
-}
+};
 
 function useApi<T>(key: string, endpoint: string, options: UseApiOptions = {}): UseApiResponse<T> {
   const [data, setData] = useState<T | null>(null);
@@ -51,16 +51,16 @@ function useApi<T>(key: string, endpoint: string, options: UseApiOptions = {}): 
     isLoading,
     isSuccess: !isLoading && !error && data !== null,
     isError: error !== null,
-    error,
+    error: error?.message ?? null,
     data,
     loading: isLoading,
   };
 }
 
 export const useSignadotClient = () => {
-  const configApi = useApi(configApiRef);
-  const discoveryApi = useApi(discoveryApiRef);
-  const fetchApi = useApi(fetchApiRef);
+  const configApi = useBackstageApi(configApiRef);
+  const discoveryApi = useBackstageApi(discoveryApiRef);
+  const fetchApi = useBackstageApi(fetchApiRef);
 
   const client = new SignadotEnvironmentsApiImpl({
     fetchApi,

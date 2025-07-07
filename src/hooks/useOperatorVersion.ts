@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSignadotClient } from "./useSignadotClient";
+import type { LatestOperatorVersionResponse } from "../api";
 import { type OperatorVersion, parseOperatorVersion } from "../internal/api/OperatorVersion";
-import { type LatestOperatorVersionResponse } from "../api";
+import { useSignadotClient } from "./useSignadotClient";
 
 export interface OperatorVersionData {
   version: OperatorVersion | null;

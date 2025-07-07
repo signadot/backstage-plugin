@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { type ClusterStatusResponse, type ClustersResponse } from "../api";
+import type { ClusterStatusResponse, ClustersResponse } from "../api";
 import { useSignadotClient } from "./useSignadotClient";
 
 export function useClusters() {

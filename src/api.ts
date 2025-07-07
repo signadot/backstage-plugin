@@ -1,9 +1,4 @@
-import {
-  FetchApi,
-  type ConfigApi,
-  createApiRef,
-  type DiscoveryApi,
-} from "@backstage/core-plugin-api";
+import { type ConfigApi, createApiRef, type DiscoveryApi, type FetchApi } from "@backstage/core-plugin-api";
 import type { GetUserMessagesResponse } from "./internal/types/messages";
 import type { SandboxV2 } from "./internal/types/sandboxes";
 import type { SandboxStatus } from "./internal/types/sandboxLegacy";
