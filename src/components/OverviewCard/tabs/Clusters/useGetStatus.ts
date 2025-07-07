@@ -1,7 +1,7 @@
-import { useOperatorVersion } from "../../../../hooks/useOperatorVersion";
 import { useClusters } from "../../../../hooks/useClusters";
-import { isObservedVersionLatest, parseOperatorVersion } from "../../../../internal/api/OperatorVersion";
+import { useOperatorVersion } from "../../../../hooks/useOperatorVersion";
 import type { OperatorVersion } from "../../../../internal/api/OperatorVersion";
+import { isObservedVersionLatest, parseOperatorVersion } from "../../../../internal/api/OperatorVersion";
 
 interface ErrorStatus {
   isError: true;
@@ -58,14 +58,14 @@ export const useGetStatus = (): Status => {
 
   if (clusters && clusters.clusters && clusterStatus) {
     totalClusters = clusters.clusters.length;
-    
+
     // Count unhealthy clusters
     for (const status of clusterStatus.Statuses) {
       if (!status.status.healthy) {
         unhealthy++;
       }
     }
-    
+
     // Count clusters needing operator upgrades
     for (const cluster of clusters.clusters) {
       if (version && cluster.operatorVersion) {
