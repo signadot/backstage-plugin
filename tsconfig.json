@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@backstage/cli/config/tsconfig.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "outDir": "dist-types",
+    "rootDir": "src",
+    "composite": true
+  }
+} 
