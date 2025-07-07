@@ -3,7 +3,7 @@ import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import { formatDistanceToNow } from "date-fns";
-import React from "react";
+import { useMemo } from "react";
 import { useSandboxes } from "../../../../hooks/useSandbox";
 import type { SandboxV2 } from "../../../../internal/types/sandboxes";
 import { getDashboardUrl } from "../../../../utils/getDashboardUrl";
@@ -77,7 +77,7 @@ const Sandboxes = (props: SandboxesProps) => {
   const sandboxesStatus = useGetStatus();
   const { sandboxesList, loading } = useSandboxes();
 
-  const recentSandboxes = React.useMemo(() => {
+  const recentSandboxes = useMemo(() => {
     if (!sandboxesList) return [];
     return [...sandboxesList]
       .sort((a: SandboxV2, b: SandboxV2) => {

@@ -1,13 +1,13 @@
 import { InfoCard } from "@backstage/core-components";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { makeStyles, type Theme } from "@material-ui/core/styles";
-import * as React from "react";
+import { type ChangeEvent, type ReactNode, useState } from "react";
 import Clusters from "./tabs/Clusters/Clusters";
 import { Notifications } from "./tabs/Notifications/Notifications";
 import Sandboxes from "./tabs/Sandboxes/Sandboxes";
 
 interface TabPanelProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   index: number;
   value: number;
 }
@@ -57,10 +57,9 @@ const DEFAULT_PROPS: OverviewCardProps = {
 const OverviewCard = (props: OverviewCardProps) => {
   const { title, sandboxes } = { ...DEFAULT_PROPS, ...props };
 
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
-  const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (_event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 

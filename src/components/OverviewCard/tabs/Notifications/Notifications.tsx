@@ -1,12 +1,6 @@
-/** @jsxRuntime classic */
-/** @jsx React.createElement */
-/** @jsxFrag React.Fragment */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars1
-
 import { Box, CircularProgress, List, ListItem, ListItemText, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
-import React from "react";
 import { useUserMessages } from "../../../../hooks/useUserMessages";
 import type { Message, MessageSeverity } from "../../../../internal/types/messages";
 
@@ -66,50 +60,50 @@ export const Notifications = () => {
 
   return (
     <>
-    <Typography variant="h5">Notifications</Typography>
+      <Typography variant="h5">Notifications</Typography>
 
-    <List>
-      {messages.map((message: Message) => {
-        const severityColorClass = classes[getSeverityColor(message.severity)];
-        return (
-          <ListItem
-            ContainerProps={{ style: { padding: 0 } }}
-            divider
-            key={`${message.kind}-${message.title}-${message.description}`}
-            style={{ padding: 0 }}
-          >
-            <ListItemText
-              primary={
-                <Typography className={severityColorClass} variant="subtitle1">
-                  {message.title}
-                </Typography>
-              }
-              secondary={
-                <>
-                  <Typography color="textSecondary" component="span" variant="body2">
-                    {message.description}
+      <List>
+        {messages.map((message: Message) => {
+          const severityColorClass = classes[getSeverityColor(message.severity)];
+          return (
+            <ListItem
+              ContainerProps={{ style: { padding: 0 } }}
+              divider
+              key={`${message.kind}-${message.title}-${message.description}`}
+              style={{ padding: 0 }}
+            >
+              <ListItemText
+                primary={
+                  <Typography className={severityColorClass} variant="subtitle1">
+                    {message.title}
                   </Typography>
-                  {message.actionLink && (
-                    <Typography
-                      color="primary"
-                      component="a"
-                      display="block"
-                      href={message.actionLink}
-                      variant="caption"
-                    >
-                      View Details
+                }
+                secondary={
+                  <>
+                    <Typography color="textSecondary" component="span" variant="body2">
+                      {message.description}
                     </Typography>
-                  )}
-                  <Typography className={severityColorClass} component="span" display="block" variant="caption">
-                    Severity: {message.severity}
-                  </Typography>
-                </>
-              }
-            />
-          </ListItem>
-        );
-      })}
-    </List>
+                    {message.actionLink && (
+                      <Typography
+                        color="primary"
+                        component="a"
+                        display="block"
+                        href={message.actionLink}
+                        variant="caption"
+                      >
+                        View Details
+                      </Typography>
+                    )}
+                    <Typography className={severityColorClass} component="span" display="block" variant="caption">
+                      Severity: {message.severity}
+                    </Typography>
+                  </>
+                }
+              />
+            </ListItem>
+          );
+        })}
+      </List>
     </>
   );
 };

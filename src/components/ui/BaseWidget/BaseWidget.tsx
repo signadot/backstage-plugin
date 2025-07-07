@@ -1,15 +1,14 @@
 import { InfoCard, Progress } from "@backstage/core-components";
 import type { IconComponent } from "@backstage/core-plugin-api";
 import { makeStyles } from "@material-ui/core/styles";
-import type React from "react";
-import type { FC } from "react";
+import type { JSX, ReactNode } from "react";
 import Status from "./Status";
 
 type BaseWidgetProps = {
   title: string;
   icon?: IconComponent;
   isLoading?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface BaseWidgetComponent extends FC<BaseWidgetProps> {
+interface BaseWidgetComponent {
+  (props: BaseWidgetProps): JSX.Element;
   Status: typeof Status;
 }
 
