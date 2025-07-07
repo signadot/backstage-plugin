@@ -1,7 +1,6 @@
-import { useApi } from "@backstage/core-plugin-api";
 import { useCallback, useEffect, useState } from "react";
-import { signadotApiRef } from "../api";
 import type { Message } from "../internal/types/messages";
+import { useSignadotClient } from "./useSignadotClient";
 
 interface UserMessagesData {
   messages: Message[] | null;
@@ -9,7 +8,7 @@ interface UserMessagesData {
 }
 
 export const useUserMessages = (refreshInterval = 30000): UserMessagesData => {
-  const signadotApi = useApi(signadotApiRef);
+  const signadotApi = useSignadotClient();
   const [data, setData] = useState<UserMessagesData>({
     messages: null,
     error: null,
