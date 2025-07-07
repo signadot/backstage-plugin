@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { Message } from "../internal/types/messages";
 import { useSignadotClient } from "./useSignadotClient";
+import { useDataFetching } from "./useDataFetching";
 
 interface UserMessagesData {
   messages: Message[] | null;
@@ -9,35 +10,19 @@ interface UserMessagesData {
 
 export const useUserMessages = (refreshInterval = 30000): UserMessagesData => {
   const signadotApi = useSignadotClient();
-  const [data, setData] = useState<UserMessagesData>({
-    messages: null,
-    error: null,
-  });
-
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await signadotApi.messages.getUserMessages();
-      setData({
-        messages: response.messages,
-        error: null,
-      });
-    } catch (error) {
-      setData({
-        messages: null,
-        error: error instanceof Error ? error.message : "An error occurred",
-      });
-    }
+  
+  const fetchMessages = useCallback(async () => {
+    const response = await signadotApi.messages.getUserMessages();
+    return response.messages;
   }, [signadotApi]);
 
-  useEffect(() => {
-    fetchData();
+  const { data: messages, error } = useDataFetching<Message[]>(
+    fetchMessages,
+    { refreshInterval }
+  );
 
-    if (refreshInterval > 0) {
-      const interval = setInterval(fetchData, refreshInterval);
-      return () => clearInterval(interval);
-    }
-    return undefined;
-  }, [fetchData, refreshInterval]);
-
-  return data;
+  return {
+    messages,
+    error: error?.message ?? null,
+  };
 };
