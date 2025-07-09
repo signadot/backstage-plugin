@@ -1,1 +1,1 @@
-export { default } from './OverviewCard'; 
+export { OverviewCard } from './OverviewCard';

@@ -43,7 +43,7 @@ const DEFAULT_PROPS: OverviewCardProps = {
   tabs: ["notifications", "sandboxes", "clusters"],
 };
 
-const OverviewCard = (props: OverviewCardProps) => {
+export const OverviewCard = (props: OverviewCardProps) => {
   const { title, sandboxes, tabs } = { ...DEFAULT_PROPS, ...props };
 
   const [value, setValue] = useState(0);
@@ -85,4 +85,3 @@ const OverviewCard = (props: OverviewCardProps) => {
   );
 };
 
-export default OverviewCard;

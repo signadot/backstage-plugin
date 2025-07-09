@@ -1,13 +1,13 @@
 import { createComponentExtension } from '@backstage/core-plugin-api';
 import { signadotPlugin } from './plugin';
 
-export const SignadotEnvironmentsPage = signadotPlugin.provide(
+export const OverviewCard = signadotPlugin.provide(
   createComponentExtension({
-    name: 'SignadotEnvironmentsPage',
+    name: 'OverviewCard',
     component: {
       lazy: () =>
-        import('./components/SignadotEnvironmentsPage').then(
-          m => m.SignadotEnvironmentsPage,
+        import('./components/OverviewCard').then(
+          m => m.OverviewCard,
         ),
     },
   }),
