@@ -9,6 +9,12 @@
     "main": "dist/index.esm.js",
     "types": "dist/index.d.ts"
   },
+  "keywords": [
+    "signadot",
+    "backstage",
+    "plugin",
+    "preview-environment"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/signadot/backstage-plugin.git"
