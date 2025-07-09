@@ -1,7 +1,6 @@
 import { useClusters } from "../../../../hooks/useClusters";
 import { useOperatorVersion } from "../../../../hooks/useOperatorVersion";
-import type { OperatorVersion } from "../../../../internal/api/OperatorVersion";
-import { isObservedVersionLatest, parseOperatorVersion } from "../../../../internal/api/OperatorVersion";
+import { isObservedVersionLatest } from "../../../../internal/api/OperatorVersion";
 
 interface ErrorStatus {
   isError: true;
@@ -15,7 +14,7 @@ interface SuccessStatus {
   totalClusters: number;
   unhealthy: number;
   pendingUpgrade: number;
-  operatorVersion: OperatorVersion | null;
+  operatorVersion: string | null;
 }
 
 interface LoadingStatus {
@@ -69,8 +68,7 @@ export const useGetStatus = (): Status => {
     // Count clusters needing operator upgrades
     for (const cluster of clusters.clusters) {
       if (version && cluster.operatorVersion) {
-        const clusterVersion = parseOperatorVersion(cluster.operatorVersion);
-        if (!isObservedVersionLatest(clusterVersion, version)) {
+        if (!isObservedVersionLatest(cluster.operatorVersion, version)) {
           pendingUpgrades++;
         }
       }
