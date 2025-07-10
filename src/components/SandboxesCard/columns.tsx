@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SandboxName = ({ name, status }: SandboxV2) => {
-  const redirectUrl = getDashboardUrl(`/sandbox/name/${name}`);
   const classes = useStyles();
 
   return (
@@ -41,8 +40,10 @@ export const SandboxName = ({ name, status }: SandboxV2) => {
           [classes.statusReady]: status?.ready,
           [classes.statusNotReady]: !status?.ready,
         })}
-      ></div>
-      <Link to={redirectUrl}>{name}</Link>
+      />
+      <Link rel="noopener noreferrer" target="_blank" to={getDashboardUrl(name)}>
+        {name}
+      </Link>
     </div>
   );
 };
