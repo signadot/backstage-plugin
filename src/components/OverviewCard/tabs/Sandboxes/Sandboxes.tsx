@@ -83,7 +83,7 @@ const Sandboxes = (props: SandboxesProps) => {
       .sort((a: SandboxV2, b: SandboxV2) => {
         if (!a.updatedAt || !b.updatedAt) return 0;
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-      })  
+      })
       .slice(0, maxRecentSandboxes);
   }, [sandboxesList, maxRecentSandboxes]);
 
@@ -131,24 +131,24 @@ const Sandboxes = (props: SandboxesProps) => {
       <div className={classes.content}>{renderStatus()}</div>
       <div className={classes.footer}>
         <Typography variant="h6">Recent Sandboxes</Typography>
-        {loading ? (
-          <Typography variant="body2">Loading...</Typography>
-        ) : recentSandboxes.length > 0 ? (
+        {loading && <Typography variant="body2">Loading...</Typography>}
+        {!loading && recentSandboxes.length > 0 && (
           <div className={classes.recentList}>
             {recentSandboxes.map((sandbox) => (
               <div className={classes.recentItem} key={sandbox.name}>
-                <Link className={classes.sandboxName} to={getDashboardUrl(`/sandboxes/name/${sandbox.name}`)}>
+                <Link rel="noopener noreferrer" target="_blank" to={getDashboardUrl(sandbox.name)}>
                   {sandbox.name}
                 </Link>
-                <span className={classes.timeAgo}>
-                  {sandbox.updatedAt && formatDistanceToNow(new Date(sandbox.updatedAt), { addSuffix: true })}
-                </span>
+                <Typography variant="caption">
+                  {formatDistanceToNow(new Date(sandbox.createdAt), {
+                    addSuffix: true,
+                  })}
+                </Typography>
               </div>
             ))}
           </div>
-        ) : (
-          <Typography variant="body2">No sandboxes found</Typography>
         )}
+        {!loading && recentSandboxes.length === 0 && <Typography variant="body2">No recent sandboxes</Typography>}
       </div>
     </div>
   );

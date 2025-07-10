@@ -84,4 +84,3 @@ export const OverviewCard = (props: OverviewCardProps) => {
     </InfoCard>
   );
 };
-

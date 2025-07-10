@@ -82,7 +82,7 @@ export const SandboxesCard = ({ columns: filterColumns, clusterName }: SandboxCa
       emptyContent={
         <div className={classes.emptyContent}>
           No sandboxes found. You can create new sandboxes at{" "}
-          <Link externalLinkIcon={true} rel="noopener noreferrer" target="_blank" to="https://app.signadot.com">
+          <Link externalLinkIcon rel="noopener noreferrer" target="_blank" to="https://app.signadot.com">
             app.signadot.com
           </Link>
         </div>
