@@ -1,9 +1,10 @@
 {
   "name": "@signadot-lib/backstage-plugin",
-  "version": "0.1.10-xrc.2",
+  "version": "0.1.10-xrc.3",
   "license": "Apache-2.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "module": "./dist/index.esm.js",
   "publishConfig": {
     "access": "public",
     "main": "dist/index.esm.js",
