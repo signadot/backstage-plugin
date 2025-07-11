@@ -50,7 +50,7 @@ export const HomePage = () => (
   </Grid>
 );
 ```
-![All Sandboxes](docs/img/sandboxes-card.png)
+![All Sandboxes](https://github.com/signadot/backstage-plugin/blob/main/docs/img/sandboxes-card.png)
 
 #### Filtered by Cluster
 ```tsx
@@ -64,7 +64,7 @@ export const HomePage = () => (
   </Grid>
 );
 ```
-![Dev Cluster Sandboxes](docs/img/sandboxes-card-dev.png)
+![Dev Cluster Sandboxes](https://github.com/signadot/backstage-plugin/blob/main/docs/img/sandboxes-card-dev.png)
 
 #### Custom Columns
 ```tsx
@@ -78,7 +78,7 @@ export const HomePage = () => (
   </Grid>
 );
 ```
-![Filtered Cluster Sandboxes](docs/img/sandboxes-card-filter-columns.png)
+![Filtered Cluster Sandboxes](https://github.com/signadot/backstage-plugin/blob/main/docs/img/sandboxes-card-filter-columns.png)
 
 ### OverviewCard
 
@@ -96,7 +96,7 @@ export const HomePage = () => (
   </Grid>
 );
 ```
-![Dev Cluster Sandboxes](docs/img/overview-all-tabs.png)
+![Dev Cluster Sandboxes](https://github.com/signadot/backstage-plugin/blob/main/docs/img/overview-all-tabs.png)
 
 ##### Clusters Tab Only
 ```tsx
@@ -110,7 +110,7 @@ export const HomePage = () => (
   </Grid>
 );
 ```
-![Clusters Tab](docs/img/overview-clusters-tab.png)
+![Clusters Tab](https://github.com/signadot/backstage-plugin/blob/main/docs/img/overview-clusters-tab.png)
 
 ##### Selected Tabs
 ```tsx
@@ -124,7 +124,7 @@ export const HomePage = () => (
   </Grid>
 );
 ```
-![Two Tabs](docs/img/overview-two-tabs.png)
+![Two Tabs](https://github.com/signadot/backstage-plugin/blob/main/docs/img/overview-two-tabs.png)
 
 ## Component Props
 
