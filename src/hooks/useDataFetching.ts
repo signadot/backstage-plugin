@@ -20,7 +20,7 @@ export function useDataFetching<T>(
   options: UseDataFetchingOptions = {}
 ): DataFetchingState<T> {
   const {
-    refreshInterval = 0,
+    refreshInterval = 30000,
     initialData = null,
     onSuccess,
     onError,
@@ -74,6 +74,11 @@ export function useDataFetching<T>(
     fetchDataRef.current = fetchData;
   }, [fetchData]);
 
+  // Initial fetch when component mounts
+  useEffect(() => {
+    fetchDataRef.current?.();
+  }, []);
+
   useEffect(() => {
     if (refreshInterval) {
       const interval = setInterval(() => {
@@ -82,7 +87,7 @@ export function useDataFetching<T>(
       return () => clearInterval(interval);
     }
     return undefined;
-  }, [refreshInterval]); // removed fetchData dependency
+  }, [refreshInterval]);
 
   return state;
 } 
