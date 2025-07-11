@@ -9,6 +9,13 @@
     "main": "dist/index.esm.js",
     "types": "dist/index.d.ts"
   },
+  "backstage": {
+    "role": "frontend-plugin",
+    "pluginId": "signadot",
+    "pluginPackages": [
+      "@signadot-lib/backstage-plugin"
+    ]
+  },
   "keywords": [
     "signadot",
     "backstage",
@@ -18,9 +25,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/signadot/backstage-plugin.git"
-  },
-  "backstage": {
-    "role": "frontend"
   },
   "sideEffects": false,
   "scripts": {
