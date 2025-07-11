@@ -1,6 +1,6 @@
 {
   "name": "@signadot-lib/backstage-plugin",
-  "version": "0.1.3",
+  "version": "0.1.4-xrc.1",
   "license": "Apache-2.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
