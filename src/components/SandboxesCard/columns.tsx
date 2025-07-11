@@ -41,7 +41,7 @@ export const SandboxName = ({ name, status }: SandboxV2) => {
           [classes.statusNotReady]: !status?.ready,
         })}
       />
-      <Link rel="noopener noreferrer" target="_blank" to={getDashboardUrl(name)}>
+      <Link rel="noopener noreferrer" target="_blank" to={getDashboardUrl(`/sandbox/name/${name}`)}>
         {name}
       </Link>
     </div>

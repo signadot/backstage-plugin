@@ -136,7 +136,7 @@ const Sandboxes = (props: SandboxesProps) => {
           <div className={classes.recentList}>
             {recentSandboxes.map((sandbox) => (
               <div className={classes.recentItem} key={sandbox.name}>
-                <Link rel="noopener noreferrer" target="_blank" to={getDashboardUrl(sandbox.name)}>
+                <Link rel="noopener noreferrer" target="_blank" to={getDashboardUrl(`/sandbox/name/${sandbox.name}`)}>
                   {sandbox.name}
                 </Link>
                 <Typography variant="caption">
