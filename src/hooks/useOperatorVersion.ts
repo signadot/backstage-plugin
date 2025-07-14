@@ -1,11 +1,10 @@
 import { useCallback } from "react";
 import type { LatestOperatorVersionResponse } from "../api";
-import { type OperatorVersion, parseOperatorVersion } from "../internal/api/OperatorVersion";
-import { useSignadotClient } from "./useSignadotClient";
 import { useDataFetching } from "./useDataFetching";
+import { useSignadotClient } from "./useSignadotClient";
 
 export interface OperatorVersionData {
-  version: OperatorVersion | null;
+  version: string | null;
   releaseNotes: string | null;
   loading: boolean;
   error: Error | null;
@@ -21,7 +20,7 @@ export function useOperatorVersion(): OperatorVersionData {
   const { data, loading, error } = useDataFetching<LatestOperatorVersionResponse>(fetchOperatorVersion);
 
   return {
-    version: data ? parseOperatorVersion(data.version) : null,
+    version: data?.version ?? null,
     releaseNotes: data?.releaseNotes ?? null,
     loading,
     error,

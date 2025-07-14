@@ -1,10 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@backstage/cli/config/tsconfig.json",
-  "include": ["src"],
+  "include": ["src", "dev", "config.d.ts"],
   "compilerOptions": {
     "outDir": "dist-types",
-    "rootDir": "src",
+    "rootDir": ".",
     "composite": true,
     "jsx": "react-jsx"
   }

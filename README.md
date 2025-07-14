@@ -26,6 +26,7 @@ proxy:
   endpoints:
     '/signadot':
       target: https://api.signadot.com
+      credentials: require
       changeOrigin: true
       allowedHeaders:
         - 'signadot-api-key'
