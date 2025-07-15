@@ -19,11 +19,5 @@ export interface Config {
      * @visibility frontend
      */
     org: string;
-
-    /**
-     * API key
-     * @visibility frontend
-     */
-    apiKey: string;
   };
 }

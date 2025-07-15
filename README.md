@@ -28,6 +28,7 @@ proxy:
       target: https://api.signadot.com
       credentials: require
       changeOrigin: true
+      apiKey: ${SIGNADOT_API_KEY}
       allowedHeaders:
         - 'signadot-api-key'
 ```
