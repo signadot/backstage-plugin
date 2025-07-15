@@ -77,14 +77,12 @@ export class SignadotEnvironmentsApiImpl implements SignadotEnvironmentsApi {
   }) {
     const apiUrl = options.configApi.getOptionalString("signadot.apiUrl") ?? "https://api.signadot.com";
     const org = options.configApi.getString("signadot.org");
-    const apiKey = options.configApi.getString("signadot.apiKey");
 
     this.apiUrl = apiUrl;
     this.org = org;
     this.discoveryApi = options.discoveryApi;
     this.fetchApi = options.fetchApi;
     this.headers = {
-      "signadot-api-key": apiKey,
       "Content-Type": "application/json",
     };
   }

@@ -27,7 +27,7 @@ export function useDataFetching<T>(
   } = options;
 
   const hasInitialFetch = useRef(false);
-  const fetchDataRef = useRef<() => Promise<void>>();
+  const fetchDataRef = useRef<() => Promise<void>>(() => Promise.resolve());
 
   const [state, setState] = useState<DataFetchingState<T>>({
     data: initialData,
